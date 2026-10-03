@@ -1,0 +1,76 @@
+# MySmart Calendar Card
+
+A Home Assistant Lovelace card that merges events from multiple calendar entities. It includes a rich agenda inspired by the MySmart card family, an e-ink friendly minimal list, and inline event creation/editing for calendars that support it.
+
+## Installation
+
+Build with `npm install && npm run build`, then add `mysmart-calendar-card.js` as a JavaScript module resource in Home Assistant.
+
+## Example
+
+```yaml
+type: custom:mysmart-calendar-card
+title: Calendar
+entities:
+  - calendar.family
+  - calendar.work
+design: agenda
+limit_mode: events
+max_events: 8
+show_add_event_button: false
+show_end_time: false
+minimal_date_format: relative
+language: nb-NO
+font_family: "'Space Grotesk', sans-serif"
+next_event_background: "linear-gradient(135deg, #ef8bc4, #f5c2c8)"
+next_event_text_color: "#21151e"
+```
+
+Use `design: minimal` for a simple title-left/date-right list. `minimal_text_size` accepts a CSS size such as `18px` or `1.1rem`.
+
+Set `show_add_event_button: false` to hide the add button, which is useful for read-only and e-ink dashboards. If `show_title` is also false, the entire header is removed.
+
+Minimal mode supports `minimal_date_format: absolute` (`27. juli · 15:00`) or `relative` (`I dag 15:00`, `Neste uke`, `Om 2 uker`). Times always use a 24-hour clock. Set `show_end_time: false` for a single start time, and use `language: nb-NO` to force Norwegian labels independently of the Home Assistant language.
+
+The default `font_family` is `'Space Grotesk', sans-serif`, applied directly to the card host so it does not depend on theme inheritance. The font still needs to be loaded by the Home Assistant frontend or theme.
+
+## Month mode
+
+Month mode fetches the complete displayed month, merges all configured calendars, and shows events for the selected day above the grid.
+
+```yaml
+design: month
+show_day_date: true
+month_show_event_list: true
+month_show_navigation: true
+month_show_event_count: true
+month_show_day_numbers: true
+month_week_start: monday
+month_event_day_background: "#111111"
+month_event_day_text_color: "#ffffff"
+month_empty_day_background: "#ffffff"
+month_empty_day_border: "1px solid #b8b8b8"
+month_empty_day_text_color: "#111111"
+month_selected_background: "#ff6b1a"
+month_today_background: "#111111"
+month_today_text_color: "#ffffff"
+month_day_size: "min(100%, 140px)"
+month_grid_gap: "4px"
+month_text_size: "clamp(18px, 1.6vw, 30px)"
+month_badge_size: "28%"
+month_badge_text_size: "0.72em"
+```
+
+Set `show_day_date: false` to hide the oversized selected date, month, year, and weekday header. Day numbers and the selected-day event list can be hidden independently.
+
+For very high-resolution displays, use `month_day_size: "calc(100% - 2px)"` with `month_grid_gap: "2px"` to let circles nearly fill each grid column. `month_text_size` controls the month navigation, event list, weekday headings, and numbers as one responsive scale.
+
+Set `month_show_navigation: false` to remove the month name and arrow controls. Event days use a top-left badge; set `month_show_event_count: false` to render it as a plain notification dot.
+
+Badge diameter is relative to each day circle, so it grows with `month_day_size`. Today is calculated using Home Assistant's configured timezone rather than the display device's browser timezone.
+
+## Calendar write support
+
+The plus button is shown when at least one configured calendar advertises event creation support. Clicking an event opens the inline editor when that event has a UID and its calendar supports updates. Delete is shown only when deletion is supported. These features depend on the calendar integration, not only on this card.
+
+All-day end dates in the form are inclusive for humans and converted to the exclusive end date expected by Home Assistant.
