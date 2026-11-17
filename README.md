@@ -4,7 +4,22 @@ A Home Assistant Lovelace card that merges events from multiple calendar entitie
 
 ## Installation
 
-Build with `npm install && npm run build`, then add `mysmart-calendar-card.js` as a JavaScript module resource in Home Assistant.
+### HACS
+
+1. Open HACS in Home Assistant.
+2. Click the three dots in the upper right corner and choose **Custom repositories**.
+3. Paste `https://github.com/agoberg85/mysmart-calendar-card` into the repository field, select **Dashboard** as the type, and click **Add**.
+4. Search for **MySmart Calendar Card** in HACS, open it, and click **Download**.
+5. Reload your browser when HACS asks you to.
+
+On Home Assistant 2026.11 and later, the built-in Marketplace replaces HACS. Go to **Settings > Marketplace**, choose **Add from link**, and paste the same URL. You need a connected GitHub account for this.
+
+### Manual
+
+1. Download `mysmart-calendar-card.js` from the [latest release](https://github.com/agoberg85/mysmart-calendar-card/releases/latest) and copy it to `config/www/`.
+2. Go to **Settings > Dashboards**, open the three dots menu, and choose **Resources**.
+3. Add `/local/mysmart-calendar-card.js` as a **JavaScript module**.
+4. Reload your browser.
 
 ## Example
 
